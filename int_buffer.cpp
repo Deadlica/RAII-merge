@@ -1,6 +1,7 @@
 #include "int_buffer.h"
 
 #include <algorithm>
+#include <iostream>
 
 int_buffer::int_buffer(size_t size):
 buffer_start(new int[size]),

@@ -10,21 +10,21 @@ int main() {
     srand((unsigned) time(0));
     system("clear");
     //int_buffer testing
-    f(int_buffer(10));
-    fAuto(int_buffer(10));
-    int_buffer buf(5);
-    for(auto e: buf) {std::cout << e << ", ";}
+    //f(int_buffer(10));
+    //fAuto(int_buffer(10));
+    int_buffer buf(10);
+    int_sorted bufSorted(buf.begin(), buf.size());
+    for(auto e: bufSorted) {
+        std::cout << e << ", ";
+    }
     std::cout << std::endl;
-    int_sorted bufS(buf.begin(), buf.size());
-    for(int i = 0; i < 5; i++) {
-        bufS.insert(rand() % 99 + 1);
+    for(int i = 0; i < 100; i++) {
+        bufSorted.insert((rand() % 99 + 1));
     }
-    for(auto e: bufS) {
-        //if(e != 0){
+    for(auto e: bufSorted) {
             std::cout << e << ", ";
-        //}
     }
-    std::cout << std::endl << bufS.size() << " " << bufS.capacity() << std::endl;
+    std::cout << std::endl << bufSorted.size() << " " << bufSorted.capacity() << std::endl;
 
     return 0;
 }
