@@ -21,8 +21,7 @@ int* int_sorted::insert(int value) {
         std::copy(buffer.begin(), buffer.end(), newBuffer.begin());
         buffer = newBuffer;
     }
-    bufSize++;
-    buffer[bufSize] = value;
+    buffer[bufSize++] = value;
     std::sort(buffer.begin(), buffer.begin() + bufSize);
     return buffer.begin() + bufSize;
 }
@@ -34,5 +33,41 @@ const int* int_sorted::end() const {
 }
 
 int_sorted int_sorted::merge(const int_sorted& merge_with) const {
-    return *this;
+    int_sorted c(begin(), 0);
+    const int* pointerA = begin(), *pointerB = merge_with.begin();
+    int a, b;
+    while(pointerA != end() && pointerB != merge_with.end()) {
+        a = *pointerA;
+        b = *pointerB;
+        if(a < b) {
+            c.insert(a);
+            a = *++pointerA;
+        }
+        else {
+            c.insert(b);
+            b = *++pointerB;
+        }
+    }
+    while(pointerA != end()) {
+        c.insert(a);
+        a = *++pointerA;
+    }
+    while(pointerB != merge_with.end()) {
+        c.insert(b);
+        b = *++pointerB;
+    }
+    return c;
+}
+
+int_sorted sort(const int* begin, const int* end) {
+    if(begin == end) {
+        return int_sorted(nullptr, 0);
+    }
+    if(begin == end - 1) {
+        return int_sorted(begin, 1);
+    }
+
+    ptrdiff_t half = (end - begin) / 2; // pointer diff type
+    const int* mid = begin + half;
+    return  sort(begin, mid).merge(sort(mid, end));
 }
