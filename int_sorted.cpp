@@ -4,7 +4,7 @@
 int_sorted::int_sorted(const int* source, size_t size):
 buffer(size), bufSize(size) {
     std::copy(source, source + size, buffer.begin());
-    std::sort(buffer.begin(), buffer.end());
+    //std::sort(buffer.begin(), buffer.end());
 }
 size_t int_sorted::size() const {
     return bufSize;
@@ -16,7 +16,13 @@ size_t int_sorted::capacity() const {
 
 int* int_sorted::insert(int value) {
     if(bufSize == capacity()) {
-        size_t newSize = bufSize * 2;
+        size_t newSize;
+        if(capacity() == 0) {
+            newSize = 16;
+        }
+        else {
+            newSize = bufSize * 2;
+        }
         int_buffer newBuffer(newSize);
         std::copy(buffer.begin(), buffer.end(), newBuffer.begin());
         buffer = newBuffer;
@@ -41,11 +47,11 @@ int_sorted int_sorted::merge(const int_sorted& merge_with) const {
         b = *pointerB;
         if(a < b) {
             c.insert(a);
-            a = *++pointerA;
+            pointerA++;
         }
         else {
             c.insert(b);
-            b = *++pointerB;
+            pointerB++;
         }
     }
     while(pointerA != end()) {
@@ -59,7 +65,7 @@ int_sorted int_sorted::merge(const int_sorted& merge_with) const {
     return c;
 }
 
-int_sorted sort(const int* begin, const int* end) {
+int_sorted int_sorted::sort(const int* begin, const int* end) {
     if(begin == end) {
         return int_sorted(nullptr, 0);
     }
@@ -70,4 +76,18 @@ int_sorted sort(const int* begin, const int* end) {
     ptrdiff_t half = (end - begin) / 2; // pointer diff type
     const int* mid = begin + half;
     return  sort(begin, mid).merge(sort(mid, end));
+}
+
+int_sorted& int_sorted::selectionSort() {
+    int* smallestPointer;
+    for(int* i = buffer.begin(); i != buffer.end(); i++) {
+        smallestPointer = i;
+        for(int* j = i + 1; j != buffer.end(); j++) {
+            if(*j < *smallestPointer) {
+                smallestPointer = j;
+            }
+        }
+        std::swap(*smallestPointer, *i);
+    }
+    return *this;
 }
