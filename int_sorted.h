@@ -12,6 +12,7 @@ public:
     int* insert(int value); // returns the insertion point.
     const int* begin() const;
     const int* end() const;
+    void print() const;
     int_sorted merge(const int_sorted& merge_with) const;
     int_sorted sort(const int* begin, const int* end);
     int_sorted& selectionSort();
@@ -20,5 +21,7 @@ private:
     int_buffer buffer;
     size_t bufSize;
 };
+
+int_sorted sort(const int* begin, const int* end);
 
 #endif

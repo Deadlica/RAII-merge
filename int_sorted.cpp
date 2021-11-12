@@ -27,10 +27,15 @@ int* int_sorted::insert(int value) {
         int_buffer newBuffer(newSize);
         std::copy(buffer.begin(), buffer.end(), newBuffer.begin());
         buffer = newBuffer;
-    }
+    }/*
     buffer[bufSize++] = value;
     std::sort(buffer.begin(), buffer.begin() + bufSize);
-    return buffer.begin() + bufSize;
+    return buffer.begin() + bufSize;*/
+    int_buffer newElement(1);
+    newElement[0] = value;
+    int_sorted newElementSorted(newElement.begin(), newElement.size());
+    *this = merge(newElementSorted);
+    return buffer.begin();
 }
 const int* int_sorted::begin() const {
     return buffer.begin();
@@ -39,33 +44,40 @@ const int* int_sorted::end() const {
     return begin() + bufSize;
 }
 
+void int_sorted::print() const {
+    for(auto e: *this) {
+        std::cout << e << ", ";
+    }
+    std::cout << std::endl;
+}
+
 int_sorted int_sorted::merge(const int_sorted& merge_with) const {
-    int_sorted c(begin(), 0);
+    int_buffer c(size() + merge_with.size());
     const int* pointerA = begin(), *pointerB = merge_with.begin();
-    int a, b;
+    int a, b, index = 0;
     while(pointerA != end() && pointerB != merge_with.end()) {
         a = *pointerA;
         b = *pointerB;
         if(a < b) {
-            c.insert(a);
+            c[index++] = *pointerA;
             pointerA++;
         }
         else {
-            c.insert(b);
+            c[index++] = *pointerB;
             pointerB++;
         }
     }
     while(pointerA != end()) {
-        c.insert(a);
+        c[index++] = *pointerA;
         a = *++pointerA;
     }
     while(pointerB != merge_with.end()) {
-        c.insert(b);
+        c[index++] = *pointerB;
         b = *++pointerB;
     }
-    return c;
+    int_sorted merged(c.begin(), c.size());
+    return merged;
 }
-int lolz = 0;
 int_sorted int_sorted::sort(const int* begin, const int* end) {
     if(begin == end) {
         return int_sorted(nullptr, 0);
@@ -75,8 +87,6 @@ int_sorted int_sorted::sort(const int* begin, const int* end) {
     }
 
     ptrdiff_t half = (end - begin) / 2; // pointer diff type
-    std::cout << lolz << std::endl;
-    lolz++;
     const int* mid = begin + half;
     return  sort(begin, mid).merge(sort(mid, end));
 }
