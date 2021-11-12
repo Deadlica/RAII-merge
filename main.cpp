@@ -44,9 +44,9 @@ int main() {
     std::cout << std::endl;
 
     //testing sort
-    int_buffer buf2(40000);
+    int_buffer buf2(20000);
     for(auto& e: buf2) {
-        e = rand() % 99 + 1;
+        e = rand() % 399999 + 1;
     }
     int_sorted unsortedBuffer(buf2.begin(), buf2.size());
     auto start = std::chrono::high_resolution_clock::now();

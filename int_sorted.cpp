@@ -1,5 +1,6 @@
 #include "int_sorted.h"
 #include <algorithm>
+#include <iostream>
 
 int_sorted::int_sorted(const int* source, size_t size):
 buffer(size), bufSize(size) {
@@ -64,7 +65,7 @@ int_sorted int_sorted::merge(const int_sorted& merge_with) const {
     }
     return c;
 }
-
+int lolz = 0;
 int_sorted int_sorted::sort(const int* begin, const int* end) {
     if(begin == end) {
         return int_sorted(nullptr, 0);
@@ -74,6 +75,8 @@ int_sorted int_sorted::sort(const int* begin, const int* end) {
     }
 
     ptrdiff_t half = (end - begin) / 2; // pointer diff type
+    std::cout << lolz << std::endl;
+    lolz++;
     const int* mid = begin + half;
     return  sort(begin, mid).merge(sort(mid, end));
 }
