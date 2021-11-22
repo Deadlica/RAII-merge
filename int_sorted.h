@@ -1,3 +1,8 @@
+// Labb 1, DT079G
+// Samuel Greenberg
+// int_sorted.h, 03/11/2021, 15/11/2021
+// deklaration av klassen int_sorted
+
 #ifndef INT_SORTED_H
 #define INT_SORTED_H
 
@@ -15,13 +20,11 @@ public:
     void print() const;
     int_sorted merge(const int_sorted& merge_with) const;
     int_sorted sort(const int* begin, const int* end);
-    int_sorted& selectionSort();
 
 private:
     int_buffer buffer;
-    size_t bufSize;
 };
 
-int_sorted sort(const int* begin, const int* end);
+void selectionSort(int* begin, int* end);
 
 #endif

@@ -1,10 +1,15 @@
+// Labb 1, DT079G
+// Samuel Greenberg
+// int_buffer.cpp, 03/11/2021, 15/11/2021
+// implementation av klassen int_buffer
+
 #include "int_buffer.h"
 
 #include <algorithm>
 #include <iostream>
 
 int_buffer::int_buffer(size_t size):
-buffer_start(new int[size]),
+buffer_start(size != 0? new int[size]:nullptr),
 buffer_end(buffer_start + size) {
 }
 

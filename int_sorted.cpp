@@ -1,14 +1,20 @@
+// Labb 1, DT079G
+// Samuel Greenberg
+// int_sorted.cpp, 03/11/2021, 15/11/2021
+// implementation av klassen int_sorted
+
 #include "int_sorted.h"
 #include <algorithm>
 #include <iostream>
 
 int_sorted::int_sorted(const int* source, size_t size):
-buffer(size), bufSize(size) {
-    std::copy(source, source + size, buffer.begin());
-    //std::sort(buffer.begin(), buffer.end());
+buffer(source, size) {
+    if(size > 1) {
+        buffer = sort(source, source + size).buffer;
+    }
 }
 size_t int_sorted::size() const {
-    return bufSize;
+    return buffer.size();
 }
 
 size_t int_sorted::capacity() const {
@@ -16,32 +22,16 @@ size_t int_sorted::capacity() const {
 }
 
 int* int_sorted::insert(int value) {
-    if(bufSize == capacity()) {
-        size_t newSize;
-        if(capacity() == 0) {
-            newSize = 16;
-        }
-        else {
-            newSize = bufSize * 2;
-        }
-        int_buffer newBuffer(newSize);
-        std::copy(buffer.begin(), buffer.end(), newBuffer.begin());
-        buffer = newBuffer;
-    }/*
-    buffer[bufSize++] = value;
-    std::sort(buffer.begin(), buffer.begin() + bufSize);
-    return buffer.begin() + bufSize;*/
-    int_buffer newElement(1);
-    newElement[0] = value;
-    int_sorted newElementSorted(newElement.begin(), newElement.size());
-    *this = merge(newElementSorted);
+    int_sorted newElement(&value, 1);
+
+    buffer = merge(newElement).buffer;
     return buffer.begin();
 }
 const int* int_sorted::begin() const {
     return buffer.begin();
 }
 const int* int_sorted::end() const {
-    return begin() + bufSize;
+    return buffer.end();
 }
 
 void int_sorted::print() const {
@@ -75,7 +65,8 @@ int_sorted int_sorted::merge(const int_sorted& merge_with) const {
         c[index++] = *pointerB;
         b = *++pointerB;
     }
-    int_sorted merged(c.begin(), c.size());
+    int_sorted merged(nullptr, 0);
+    merged.buffer = c;//(c.begin(), c.size());
     return merged;
 }
 int_sorted int_sorted::sort(const int* begin, const int* end) {
@@ -91,16 +82,17 @@ int_sorted int_sorted::sort(const int* begin, const int* end) {
     return  sort(begin, mid).merge(sort(mid, end));
 }
 
-int_sorted& int_sorted::selectionSort() {
+void selectionSort(int* begin, int* end) {
+    int_buffer sorted(begin, end - begin);
     int* smallestPointer;
-    for(int* i = buffer.begin(); i != buffer.end(); i++) {
+    int index = 0;
+    for(int* i = begin; i != end; i++, index++) {
         smallestPointer = i;
-        for(int* j = i + 1; j != buffer.end(); j++) {
+        for(int* j = i + 1; j != end; j++) {
             if(*j < *smallestPointer) {
                 smallestPointer = j;
             }
         }
         std::swap(*smallestPointer, *i);
     }
-    return *this;
 }

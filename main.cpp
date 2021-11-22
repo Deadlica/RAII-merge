@@ -1,3 +1,8 @@
+// Labb 1, DT079G
+// Samuel Greenberg
+// main.cpp, 03/11/2021, 15/11/2021
+// tester av klasserna
+
 #include "int_buffer.h"
 #include "int_sorted.h"
 #include <iostream>
@@ -34,6 +39,7 @@ int main() {
     for(auto& e: buf) {
         e = rand() % 399999 + 1;
     }
+    int_buffer buf2 = buf;
     int_sorted buffer(buf.begin(), buf.size());
     int_sorted buffer2 = buffer;
     std::cout << "Sorting a buffer with 400000 elements using merge sort..." << std::endl;
@@ -64,10 +70,13 @@ int main() {
     petc();
     std::cout << "Sorting..." << std::endl;
     start = std::chrono::high_resolution_clock::now();
-    buffer.selectionSort();
+    selectionSort(buf2.begin(), buf2.end());
     stop = std::chrono::high_resolution_clock::now();
     auto selectSortTime = std::chrono::duration<double>(stop - start);
-    sortedBuffer.print();
+    for(auto e: buf2) {
+        std::cout << e << ", ";
+    }
+    std::cout << std::endl;
     std::cout << std::endl << "Time to sort: " << selectSortTime.count() << "s" << std::endl;
     petc();
 

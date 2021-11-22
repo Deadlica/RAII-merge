@@ -1,3 +1,8 @@
+// Labb 1, DT079G
+// Samuel Greenberg
+// int_buffer.h, 03/11/2021, 15/11/2021
+// deklaration av klassen int_buffer
+
 #ifndef INT_BUFFER_H
 #define INT_BUFFER_H
 
